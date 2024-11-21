@@ -2,7 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import orderRoutes from './Routes/Order.Routes.js';
 import authRoutes from './Routes/Auth.Routes.js';
-import restaurantRoutes from './routes/Restaurant.Routes.js'
+import restaurantRoutes from './Routes/Restaurant.Routes.js'
 import categoryRoutes from './Routes/Category.Routes.js'
 import productRoutes from './Routes/Product.Routes.js'
 import bodyParser from './middlewares/bodyParser.js';

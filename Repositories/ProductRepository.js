@@ -3,7 +3,7 @@ import Category from '../Models/CategoryModel.js'
 
 async function saveProduct(product) {
     try {
-        const categoryId = product.CategoriaId
+        const categoryId = product.categoriaId
         const categoryDoc = await Category.findById(categoryId)
 
         if(!categoryDoc){
@@ -18,13 +18,12 @@ async function saveProduct(product) {
             nombreCategoria,
         };
 
-        // Guarda el producto con el nombre de la categoría
         const newProduct = new Product(productWithCategoryName);
         const savedProduct = await newProduct.save();
 
         return savedProduct
     } catch (error) {
-        console.error(errro)
+        console.error(error.message)
         throw error
     }
 }

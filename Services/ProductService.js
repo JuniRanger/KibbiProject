@@ -3,6 +3,7 @@ import productRepository from "../Repositories/ProductRepository.js";
 
 async function addProduct(productData) {
     try {
+        
         const product = {
             nombre: productData.nombre,
             precio: productData.precio,
