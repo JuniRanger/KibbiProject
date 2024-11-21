@@ -1,35 +1,47 @@
 import Category from "../Models/CategoryModel.js";
-import categoryRepository from '../Repositories/CategoryRepository.js'
+import categoryRepository from "../Repositories/CategoryRepository.js";
 
-async function addCategory(data){
+// Agregar una categoría
+async function addCategory(data) {
     try {
-
         const newCategory = {
             nombre: data.nombre,
             restaurantId: data.restaurantId
-        }
+        };
 
-        const categoryId = await categoryRepository.saveCategory(newCategory)
-
-        return {id: categoryId, ...newCategory}
-    } catch (error) {  
-        console.error(error)
-        throw error
+        const categoryId = await categoryRepository.saveCategory(newCategory);
+        return { id: categoryId, ...newCategory };
+    } catch (error) {
+        console.error("Error al agregar categoría:", error);
+        throw error;
     }
 }
 
-
+// Obtener todas las categorías con paginación
 const getAllCategoriesWithPagination = async (page = 1, limit = 10) => {
-    const skip = (page - 1) * limit; // Calcular el número de saltos para la paginación
-    const categories = await categoryRepository.getCategoriesWithPagination(skip, limit); // Llamar al repositorio con los valores calculados
-    const totalCategories = await categoryRepository.countCategories(); // Obtener el total de categorías para saber la cantidad de páginas
-    const totalPages = Math.ceil(totalCategories / limit); // Calcular el número total de páginas
-    return { categories, totalPages, totalCategories };
+    try {
+        const skip = (page - 1) * limit;
+        const categories = await categoryRepository.getCategoriesWithPagination(skip, limit);
+        const totalCategories = await categoryRepository.countCategories();
+        const totalPages = Math.ceil(totalCategories / limit);
+
+        return { categories, totalPages, totalCategories };
+    } catch (error) {
+        console.error("Error al obtener categorías con paginación:", error);
+        throw error;
+    }
 };
 
+// Obtener el total de categorías
 async function getTotalCategories() {
-    return await categoryRepository.countCategories();
-};
+    try {
+        const totalCategories = await categoryRepository.countCategories();
+        return totalCategories;
+    } catch (error) {
+        console.error("Error al obtener el total de categorías:", error);
+        throw error;
+    }
+}
 
 // Obtener una categoría por su ID
 async function getCategoryById(id) {
@@ -40,9 +52,9 @@ async function getCategoryById(id) {
             throw new Error(`Categoría con ID ${id} no encontrada`);
         }
 
-        return { id: categoryData.id, ...categoryData };
+        return categoryData;
     } catch (error) {
-        console.error(error);
+        console.error("Error al obtener categoría por ID:", error);
         throw error;
     }
 }
@@ -56,16 +68,10 @@ async function updateCategory(id, data) {
             throw new Error(`Categoría con ID ${id} no encontrada`);
         }
 
-        const updatedCategory = {
-            ...categoryData,
-            ...data
-        };
-
-        await categoryRepository.updateCategory(id, updatedCategory);
-
-        return { id, ...updatedCategory };
+        const updatedCategory = await categoryRepository.updateCategory(id, data);
+        return updatedCategory;
     } catch (error) {
-        console.error(error);
+        console.error("Error al actualizar categoría:", error);
         throw error;
     }
 }
@@ -82,7 +88,18 @@ async function deleteCategory(id) {
         await categoryRepository.deleteCategory(id);
         return { message: `Categoría con ID ${id} eliminada exitosamente` };
     } catch (error) {
-        console.error(error);
+        console.error("Error al eliminar categoría:", error);
+        throw error;
+    }
+}
+
+// Obtener todas las categorías (sin paginación)
+async function getAllCategories() {
+    try {
+        const categories = await categoryRepository.getAllCategories();
+        return categories;
+    } catch (error) {
+        console.error("Error al obtener todas las categorías:", error);
         throw error;
     }
 }
@@ -90,5 +107,9 @@ async function deleteCategory(id) {
 export default {
     addCategory,
     getAllCategoriesWithPagination,
-    getTotalCategories
-}
+    getTotalCategories,
+    getCategoryById,
+    updateCategory,
+    deleteCategory,
+    getAllCategories
+};

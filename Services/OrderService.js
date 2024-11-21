@@ -46,7 +46,7 @@ const getAllOrdersWithPagination = async (page = 1, limit = 10) => {
     const orders = await orderRepository.getAllOrdersWithPagination(skip, limit);
     console.log("service", orders);
 
-    return orders; // Asegúrate de retornar todas las órdenes, sin modificar su estructura
+    return orders;
 };
 
 // Actualizar una orden existente
