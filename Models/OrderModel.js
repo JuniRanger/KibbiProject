@@ -2,16 +2,11 @@ import mongoose from 'mongoose';
 
 const OrderSchema = new mongoose.Schema(
     {
-        OrderID: {
-            type: String,
-            required: true,
-            unique: true
-        },
-        Client: {
+        cliente: {
             type: String,
             required: true
         },
-        Products: {
+        productos: {
             type: [Object], 
             required: true
         },
@@ -21,14 +16,14 @@ const OrderSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ['Pending', 'Processing', 'Completed', 'Cancelled'], // Ajusta según tu lógica
-            default: 'Pending'
+            enum: ['Pendiente', 'Procesado', 'Completado', 'Cancelado'], // Ajusta según tu lógica
+            default: 'Pendiente'
         },
-        delivery_time: {
+        fechaHoraEntrega: {
             type: Date,
             required: false
         },
-        order_date: {
+        fechaOrden: {
             type: Date,
             default: Date.now
         }
@@ -39,6 +34,6 @@ const OrderSchema = new mongoose.Schema(
 );
 
 // Asegurarse de que el modelo no se registre múltiples veces
-const Order = mongoose.models.order || mongoose.model('order', OrderSchema);
+const Order = mongoose.models.orders || mongoose.model('orders', OrderSchema);
 
 export default Order;

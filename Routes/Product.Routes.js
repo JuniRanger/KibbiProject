@@ -71,6 +71,7 @@ const router = express.Router()
 router.post('/', async (req, res) => {
     try {
         const productData = await productService.addProduct({
+            usuario: req.user.id,
             nombre: req.body.nombre,
             precio: req.body.precio,
             categoriaId: req.body.categoriaId,

@@ -1,4 +1,5 @@
 import Order from '../Models/OrderModel.js'
+import Product from '../Models/ProductModel.js';
 
     async function getOrders(userId, lastDoc = null) {
         try {
@@ -46,12 +47,8 @@ async function getOrderById(order) {
 
 async function saveOrder(order) {
     try {
-        const orderRef = firestoreAdmin.collection("Orders");
-        const newOrder = await orderRef.add(order);
-
-        console.log('Orden guardada con el id: ', newOrder.id);
-
-        return newOrder.id;
+        const newOrder = await new Order(order).save();
+        return newOrder._id
     } catch (error) {
         console.error("Error al guardar la orden en la base de datos:", error);
         throw error;

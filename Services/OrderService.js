@@ -1,5 +1,7 @@
 // orderService.js
 import orderRepository from "../Repositories/OrderRepository.js";
+import productRepository from "../Repositories/ProductRepository.js";
+import UserRepository from "../Repositories/UserRepository.js";
 
 async function getAllOrders() {
     return await orderRepository.getOrders();
@@ -7,10 +9,11 @@ async function getAllOrders() {
 
 async function addOrder(orderData) {
     try {
-        const { usuarioId, restauranteId, productsIds, estado, fechaHoraEntrega, notas } = orderData;
+        const { userId, restauranteId, productsIds, estado, fechaHoraEntrega, notas } = orderData;
 
         const productsInfo = await productRepository.getProductsById(productsIds);
 
+        const cliente = await UserRepository.getUsernameById(userId)
         // Calcular el total de la orden
         let total = 0;
         productsInfo.forEach(producto => {
@@ -18,19 +21,19 @@ async function addOrder(orderData) {
         });
 
         // Crear una nueva instancia de la orden
-        const order = new Order({
-            usuarioId,
+        const order = {
+            cliente,
             restauranteId,
             productos: productsInfo,  
             estado,
             fechaHoraEntrega,
             notas,
             total  
-        });
+        };
 
-        const orderId = await orderRepository.saveOrder(order.toFirestore());
+        const orderId = await orderRepository.saveOrder(order);
 
-        return { id: orderId, order };
+        return { id: orderId, ...order };
     } catch (error) {
         console.error("Error al agregar la orden:", error.message);
         throw new Error('Error al agregar la orden');

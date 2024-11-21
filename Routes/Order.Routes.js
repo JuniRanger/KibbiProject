@@ -159,7 +159,7 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     try {
         const newOrder = await orderService.addOrder({
-            usuarioId: req.user.id,
+            userId: req.user.id,
             restauranteId: req.body.restauranteId,
             productsIds: req.body.productsIds,
             estado: req.body.estado,

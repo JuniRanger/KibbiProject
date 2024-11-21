@@ -32,6 +32,21 @@ async function getUserByUsername(username) {
     }
 }
 
+async function getUserById(userId){
+    try {
+        const user = await User.findById(userId);
+
+        if(!user){
+            throw new Error("Usuario no encontrado");
+        }
+
+        return user;
+    } catch (error) {
+        console.error(error.message);
+        throw error
+    }
+}
+
 async function getUsers() {
     try {
         const users = await User.find()
@@ -39,6 +54,20 @@ async function getUsers() {
     } catch (error) {
         console.error("Error al obtener usuarios:", error);
         throw error; 
+    }
+}
+
+async function getUsernameById(userId){
+    try {
+        const user = await User.findById(userId);
+
+        if(!user){
+            throw new Error("Usuario no encontrado en la base de datos");
+        }
+
+        return user.username
+    } catch (error) {
+        console.error(error.message);
     }
 }
 
@@ -67,4 +96,6 @@ export default {
     getUsers,
     getAllUsersWithPagination,
     countUsers,
+    getUserById,
+    getUsernameById
 };

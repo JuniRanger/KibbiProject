@@ -31,21 +31,9 @@ async function saveProduct(product) {
 
 async function getProductsById(productIds){
     try {
-        // creacion de referencias de los productos de firestore
-        const productRef = productIds.map(productId => firestoreAdmin.collection('Products').doc(productId))
+        const products = await Product.find({ _id: { $in: productIds } });
 
-        //obteniendo los productos
-        const productDocs = await firestoreAdmin.getAll(...productRef)
-
-        //guardando cada producto en el array products
-        const products = []
-        productDocs.forEach(doc => {
-            if (doc.exists){
-                products.push({ id: doc.id, ...doc.data() })
-            }
-        })
-
-        if(products.length !== productIds.length){
+        if(!products.length) {
             throw new Error("Algunos productos no fueron encontrados");
         }
 
