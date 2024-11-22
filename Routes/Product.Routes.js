@@ -92,13 +92,46 @@ router.post('/', async (req, res) => {
  * @swagger
  * /api/products:
  *   get:
- *     summary: Obtener todos los productos
+ *     summary: Obtener todos los productos con paginación
  *     tags: [Products]
  *     security:
  *       - BearerAuth: []  
+ *     parameters:
+ *       - name: page
+ *         in: query
+ *         description: Página actual para la paginación (empezando desde 1)
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *       - name: limit
+ *         in: query
+ *         description: Número de productos por página
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           example: 20
  *     responses:
  *       200:
  *         description: Lista de productos obtenida exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 products:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Product'
+ *                 total:
+ *                   type: integer
+ *                   description: Total de productos
+ *                 currentPage:
+ *                   type: integer
+ *                   description: Página actual
+ *                 totalPages:
+ *                   type: integer
+ *                   description: Total de páginas
  *       500:
  *         description: Error al obtener los productos
  */
@@ -109,9 +142,14 @@ router.get('/', async (req, res) => {
         const pageNum = parseInt(page);
         const limitNum = parseInt(limit);
 
-        const categories = await categoryService.getAllCategoriesWithPagination(pageNum, limitNum);
+        const { total, products, currentPage, totalPages } = await productService.getAllProductsWithPagination(pageNum, limitNum);
 
-        res.status(200).json({ categories });
+        res.status(200).json({
+            total,
+            products,
+            currentPage,
+            totalPages
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

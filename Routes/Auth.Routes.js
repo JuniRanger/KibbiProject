@@ -102,6 +102,7 @@ router.get('/users', async (req, res) => {
     } catch (error) {
         console.error("Error en el servidor:", error);
         res.status(500).json({ error: error.message });
+        console.log("Error en routes");
     }
 });
 

@@ -1,4 +1,5 @@
 import User from "../Models/UserModel.js";
+import mongoose from 'mongoose';
 
 async function saveUser(userData) {
     try {
@@ -13,12 +14,12 @@ async function saveUser(userData) {
 
 async function countUsers() {
     try {
-        const usersCollection = client.db('DevKibbi').collection('Users');
-        const totalUsers = await usersCollection.countDocuments();
+        const totalUsers = await User.countDocuments();
         return totalUsers;
     } catch (error) {
         console.error('Error al contar los usuarios:', error);
         throw error;
+        
     }
 }
 
@@ -73,13 +74,10 @@ async function getUsernameById(userId){
 
 async function getAllUsersWithPagination(skip, limit) {
     try {
-        const usersCollection = client.db('DevKibbi').collection("users");
-
         // Obtener los usuarios con paginación
-        const users = await usersCollection.find()
+        const users = await User.find()
             .skip(skip)  // Aplicar el número de saltos para la paginación
-            .limit(limit)  // Limitar el número de resultados
-            .toArray();  // Convertir a un array
+            .limit(limit);  // Limitar el número de resultados
 
         console.log("Usuarios encontrados:", users);
         return users;  // Devolver los usuarios obtenidos

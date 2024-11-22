@@ -11,9 +11,6 @@ const router = express.Router();
  *       type: http
  *       scheme: bearer
  *       bearerFormat: JWT
- * 
- * security:
- *   - BearerAuth: []
  */
 
 /**
@@ -45,8 +42,8 @@ const router = express.Router();
  *                 type: string
  *                 example: "Calle Falsa 123, Ciudad, País"
  *               city:
- *                  type: string
- *                  exampe: "Ciudad falsa"
+ *                 type: string
+ *                 example: "Ciudad falsa"
  *     responses:
  *       201:
  *         description: Restaurante creado exitosamente
@@ -55,7 +52,6 @@ const router = express.Router();
  */
 router.post('/', async (req, res) => {
     try {
-
         const restaurantData = await restaurantService.addRestaurant({
             nombre: req.body.nombre,
             correo: req.body.correo,
@@ -75,21 +71,76 @@ router.post('/', async (req, res) => {
  * @swagger
  * /api/restaurants:
  *   get:
- *     summary: Obtener todos los restaurantes
+ *     summary: Obtener todos los restaurantes con paginación
  *     tags: [Restaurants]
- *     description: Devuelve todos los restaurantes de la base de datos.
+ *     description: Devuelve todos los restaurantes de la base de datos con paginación.
  *     security:
  *       - BearerAuth: []
+ *     parameters:
+ *       - name: page
+ *         in: query
+ *         description: Página actual para la paginación (empezando desde 1)
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *       - name: limit
+ *         in: query
+ *         description: Número de restaurantes por página
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           example: 10
  *     responses:
  *       200:
  *         description: Lista de restaurantes obtenida
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 restaurants:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       nombre:
+ *                         type: string
+ *                       correo:
+ *                         type: string
+ *                       telefono:
+ *                         type: string
+ *                       direccion:
+ *                         type: string
+ *                       city:
+ *                         type: string
+ *                 total:
+ *                   type: integer
+ *                   description: Total de restaurantes
+ *                 currentPage:
+ *                   type: integer
+ *                   description: Página actual
+ *                 totalPages:
+ *                   type: integer
+ *                   description: Total de páginas
  *       500:
  *         description: Error en el servidor
  */
 router.get('/', async (req, res) => {
     try {
-        const restaurants = await restaurantService.getAllRestaurants();
-        res.status(200).json({ restaurants });
+        const { page = 1, limit = 10 } = req.query;
+
+        const pageNum = parseInt(page);
+        const limitNum = parseInt(limit);
+
+        const { total, restaurants, currentPage, totalPages } = await restaurantService.getAllRestaurantsWithPagination(pageNum, limitNum);
+
+        res.status(200).json({
+            total,
+            restaurants,
+            currentPage,
+            totalPages
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -206,7 +257,6 @@ router.put('/:id', async (req, res) => {
  *       500:
  *         description: Error en el servidor
  */
-
 router.delete('/:id', async (req, res) => {
     try {
         const deletedRestaurant = await restaurantService.deleteRestaurant(req.params.id);

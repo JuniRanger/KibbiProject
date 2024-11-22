@@ -24,7 +24,7 @@ async function addProduct(productData) {
 // Obtener todos los productos con paginación
 async function getAllProductsWithPagination(page = 1, limit = 10) {
     try {
-        const skip = (page - 1) * limit;
+        const skip = (page);
         return await productRepository.getAllProductsWithPagination(skip, limit);
     } catch (error) {
         console.error("Error al obtener productos con paginación:", error);
