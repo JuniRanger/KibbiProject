@@ -1,5 +1,5 @@
 import swaggerJSDoc from "swagger-jsdoc";
-
+import path from 'path'
 
 const options = {
     definition: {
@@ -33,7 +33,7 @@ const options = {
             }
         }
     },
-    apis: ['../Routes/*.js'], // files containing annotations as above
+    apis: [path.join(__dirname, 'Routes/*.js')], // files containing annotations as above
 };
 
 const specs = swaggerJSDoc(options);
