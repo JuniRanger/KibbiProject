@@ -13,7 +13,7 @@ const options = {
             },
             servers: [
                 {
-                    url: 'https://kibbiapi.onrender.com/api-docs',
+                    url: 'https://kibbiapi.onrender.com',
                     description: 'render server'
                 },
                 {
