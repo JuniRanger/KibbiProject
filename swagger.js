@@ -33,7 +33,7 @@ const options = {
             }
         }
     },
-    apis: ['../Routes/*.js'], // files containing annotations as above
+    apis: ['./Routes/*.js'], // files containing annotations as above
 };
 
 const specs = swaggerJSDoc(options);

@@ -10,7 +10,7 @@ import dotenv from 'dotenv';
 import CorsMiddleware from './middlewares/CorsMiddleware.js';
 import verifyToken from './middlewares/authMiddleware.js';
 import swaggerUI from 'swagger-ui-express';
-import specs from './config/swagger.js'
+import specs from './swagger.js'
 import mongooseConnect from './config/mongoConfig.js';
 
 dotenv.config();
