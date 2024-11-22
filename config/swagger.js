@@ -12,7 +12,7 @@ const options = {
             },
             servers: [
                 {
-                    url: 'https://backapi-29lg.onrender.com',
+                    url: 'https://kibbiapi.onrender.com',
                     description: 'render server'
                 },
                 {
