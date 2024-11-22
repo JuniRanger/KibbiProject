@@ -7,8 +7,8 @@ const CategorySchema = new mongoose.Schema(
             required: true
         },
         restaurantId: {
-            type: mongoose.Schema.Types.ObjectId, // Relación con la colección Restaurant
-            ref: 'Restaurant',
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'Restaurants',
             required: true
         }
     },

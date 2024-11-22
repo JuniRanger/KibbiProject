@@ -12,7 +12,7 @@ async function saveRestaurant(restaurantData) {
             throw new Error("Usuario no encontrado");
         }
 
-        user.restaurantes.push(savedRestaurant._id); // Asegúrate de que el esquema del usuario tenga esta relación
+        user.restaurantes.push(savedRestaurant._id);
         await user.save();
 
         return savedRestaurant._id;
@@ -30,7 +30,7 @@ async function getAllRestaurantsWithPagination(skip, limit) {
             .limit(limit)
             .exec();
 
-        const total = await Restaurant.countDocuments(); // Total de restaurantes para información adicional
+        const total = await Restaurant.countDocuments(); 
 
         return {
             total,

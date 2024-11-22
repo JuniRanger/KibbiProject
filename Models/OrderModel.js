@@ -7,17 +7,26 @@ const OrderSchema = new mongoose.Schema(
             required: true
         },
         productos: {
-            type: [Object], 
+            type: [Object],
             required: true
         },
         total: {
             type: Number,
             required: true
         },
-        status: {
+        estado: {
             type: String,
-            enum: ['Pendiente', 'Procesado', 'Completado', 'Cancelado'], // Ajusta según tu lógica
-            default: 'Pendiente'
+            enum: ['pendiente', 'procesado', 'completado', 'cancelado'], // Ajusta según tu lógica
+            default: 'pendiente' // Asegura que esté en minúsculas para consistencia
+        },
+        notas: {
+            type: String,
+            default: null
+        },
+        restauranteId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'restaurants', // Ajusta el nombre según tu colección
+            required: true
         },
         fechaHoraEntrega: {
             type: Date,

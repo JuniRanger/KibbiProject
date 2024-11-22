@@ -159,12 +159,12 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     try {
         const newOrder = await orderService.addOrder({
-            userId: req.user.id,
+            userId: req.user.id, 
             restauranteId: req.body.restauranteId,
             productsIds: req.body.productsIds,
-            estado: req.body.estado,
-            fechaHoraEntrega: req.body.fechaHoraEntrega,
-            notas: req.body.notas
+            estado: req.body.estado || 'pendiente', // Valor por defecto
+            fechaHoraEntrega: req.body.fechaHoraEntrega || new Date().toISOString(), 
+            notas: req.body.notas || null
         });
         res.status(201).json({ order: newOrder });
     } catch (error) {
@@ -252,22 +252,18 @@ router.put('/:id', async (req, res, next) => {
  */
 router.delete('/:id', async (req, res, next) => {
     try {
-        const result = await orderService.deleteOrder({
-            id: req.params.id,
-            usuarioId: req.user.id,
-            restauranteId: req.body.restauranteId,
-            productos: req.body.productos,
-            estado: req.body.estado,
-            fechaHoraEntrega: req.body.fechaHoraEntrega,
-            notas: req.body.notas
-        });
+        // Llamada a la función de eliminación con solo el ID de la orden
+        const result = await orderService.deleteOrder(req.params.id, req.user.id); 
+
         if (!result) {
             return res.status(404).json({ error: "Orden no encontrada" });
         }
+        
         res.json({ message: "Orden eliminada exitosamente" });
     } catch (error) {
         next(error);
     }
 });
+
 
 export default router;

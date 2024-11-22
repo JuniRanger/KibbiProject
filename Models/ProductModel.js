@@ -16,8 +16,7 @@ const productSchema = new mongoose.Schema(
         },
         categoriaId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Category',
-            required: [true, 'La categoría es obligatoria'],
+            ref: 'Categories',
         },
         descripcion: {
             type: String,

@@ -12,6 +12,7 @@ async function addProduct(productData) {
             restauranteId: productData.restauranteId,
         };
 
+        console.log("Productos que se estan enviando:", product)
         const productId = await productRepository.saveProduct(product);
         return { id: productId, ...product };
     } catch (error) {

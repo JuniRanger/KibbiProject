@@ -13,9 +13,6 @@ export async function verifyToken(req, res, next) {
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
 
-        // Log para verificar los datos decodificados
-        console.log('Datos decodificados del token:', decoded);
-
         if (!decoded || !decoded.username) {
             throw new Error("Username missing in token");
         }
@@ -27,13 +24,7 @@ export async function verifyToken(req, res, next) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
-        // Log para verificar si se encuentra el usuario
-        console.log('Usuario encontrado:', user);
-
         req.user = { ...decoded };
-
-        // Log final para confirmar los datos que se añaden al objeto req
-        console.log('Datos añadidos al req.user:', req.user);
 
         next(); 
     } catch (err) {

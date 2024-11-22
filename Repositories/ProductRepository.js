@@ -4,6 +4,7 @@ import Category from '../Models/CategoryModel.js';
 // Guardar un producto
 async function saveProduct(product) {
     try {
+        console.log('Categoria id', product.categoriaId)
         const categoryId = product.categoriaId;
         const categoryDoc = await Category.findById(categoryId);
 

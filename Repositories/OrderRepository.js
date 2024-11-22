@@ -1,44 +1,38 @@
 import Order from '../Models/OrderModel.js'
 import Product from '../Models/ProductModel.js';
 
-    async function getOrders(userId, lastDoc = null) {
-        try {
-            let query = firestoreAdmin.collection('Orders')
-            .where('id', '==', userId)
-            .orderBy('fechaHora', 'desc')
-            .limit(20)
+async function getOrders(userId, lastDoc = null) {
+    try {
+        let query = Order.find({ cliente: userId })
+            .sort({ fechaHoraEntrega: -1 })
+            .limit(20);
 
-            if (lastDoc && typeof lastDoc !== 'undefined') {
-                query = query.startAfter(lastDoc);
-            }
-            
-            const querySnapshot = await query.get()
-
-            const orders = querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data()
-            }))
-
-            const newLastVisible = querySnapshot.docs[querySnapshot.docs.length - 1] || null;
-
-            return{
-                orders,
-                lastDoc: newLastVisible
-            }
-
-        } catch (error) {
-            console.error(error);
-            throw error;
+        if (lastDoc && typeof lastDoc !== 'undefined') {
+            query = query.skip(lastDoc); // Usamos skip para manejar la paginación
         }
+
+        const orders = await query.exec();
+        
+        // MongoDB no tiene "lastDoc" de la misma forma que Firestore, pero podemos simularlo con "skip"
+        const newLastVisible = orders.length ? orders[orders.length - 1]._id : null;
+
+        return {
+            orders,
+            lastDoc: newLastVisible
+        };
+    } catch (error) {
+        console.error(error);
+        throw error;
     }
+}
 
 async function getOrderById(order) {
     try {
-        const orderDoc = await firestoreAdmin.collection('Orders').doc(order.id).get();
-        if (!orderDoc.exists) {
+        const orderDoc = await Order.findById(order.id);
+        if (!orderDoc) {
             throw new Error(`Orden con ID ${order.id} no encontrada.`);
         }
-        return { id: orderDoc.id, ...orderDoc.data() };
+        return orderDoc;
     } catch (error) {
         console.error(error);
         throw error;
@@ -47,8 +41,9 @@ async function getOrderById(order) {
 
 async function saveOrder(order) {
     try {
-        const newOrder = await new Order(order).save();
-        return newOrder._id
+        const newOrder = new Order(order);
+        await newOrder.save();
+        return newOrder._id;
     } catch (error) {
         console.error("Error al guardar la orden en la base de datos:", error);
         throw error;
@@ -57,16 +52,11 @@ async function saveOrder(order) {
 
 async function updateOrder(id, updatedOrder) {
     try {
-        const orderRef = firestoreAdmin.collection('Orders').doc(id);
-        const orderDoc = await orderRef.get();
-
-        if (!orderDoc.exists) {
+        const updatedOrderDoc = await Order.findByIdAndUpdate(id, updatedOrder, { new: true });
+        if (!updatedOrderDoc) {
             throw new Error(`Orden con ID ${id} no encontrada.`);
         }
-
-        await orderRef.update(updatedOrder); 
-        const updatedOrderDoc = await orderRef.get(); 
-        return { id: updatedOrderDoc.id, ...updatedOrderDoc.data() };
+        return updatedOrderDoc;
     } catch (error) {
         console.error("Error al actualizar la orden:", error);
         throw error;
@@ -75,14 +65,10 @@ async function updateOrder(id, updatedOrder) {
 
 async function deleteOrder(id) {
     try {
-        const orderRef = firestoreAdmin.collection('Orders').doc(id);
-        const orderDoc = await orderRef.get();
-
-        if (!orderDoc.exists) {
+        const deletedOrder = await Order.findByIdAndDelete(id);
+        if (!deletedOrder) {
             throw new Error(`Orden con ID ${id} no encontrada.`);
         }
-
-        await orderRef.delete(); // Delete the order
         return { message: `Orden con ID ${id} eliminada exitosamente.` };
     } catch (error) {
         console.error("Error al eliminar la orden:", error);
@@ -92,16 +78,13 @@ async function deleteOrder(id) {
 
 async function getAllOrdersWithPagination(skip, limit) {
     try {
-        const ordersCollection = client.db('DevKibbi').collection("orders");
-
-        // Obtener las órdenes con paginación
-        const orders = await ordersCollection.find()
+        // Mongoose: obtenemos las órdenes con paginación
+        const orders = await Order.find()
             .skip(skip)  // Aplicar el número de saltos para la paginación
-            .limit(limit)  // Limitar el número de resultados
-            .toArray();  // Convertir a un array
+            .limit(limit);  // Limitar el número de resultados
 
         console.log("Órdenes encontrados:", orders);
-        return orders;  // Devolver las órdenes mapeadas
+        return orders;  // Devolver las órdenes encontradas
     } catch (error) {
         console.error("Error al obtener las órdenes:", error);
         throw error;

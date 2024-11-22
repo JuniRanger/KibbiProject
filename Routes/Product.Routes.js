@@ -80,6 +80,8 @@ router.post('/', async (req, res) => {
             imagenes: req.body.imagenes,
             restauranteId: req.body.restauranteId
         });
+
+        console.log("Cuerpo del request:", req.body)
         res.status(201).json({ productData });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -93,7 +95,7 @@ router.post('/', async (req, res) => {
  *     summary: Obtener todos los productos
  *     tags: [Products]
  *     security:
- *       - BearerAuth: []  # Añadido el token de autenticación
+ *       - BearerAuth: []  
  *     responses:
  *       200:
  *         description: Lista de productos obtenida exitosamente
