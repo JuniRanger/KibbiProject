@@ -4,7 +4,7 @@ const allowedDomains = [
     'http://127.0.0.1:5500',
     'https://frontapi-0cuw.onrender.com/',
     'http://localhost:3000',
-    'https://backapi-29lg.onrender.com'
+    'https://kibbiapi.onrender.com'
     
 ];
 
