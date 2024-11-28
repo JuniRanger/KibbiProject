@@ -95,11 +95,30 @@ async function getAllOrdersWithPagination(skip, limit) {
     }
 }
 
+async function getOrdersByUser(userId) {
+    try {
+        // Consultar las órdenes del usuario
+        const orders = await Order.find({ cliente: userId });
+
+        if (!orders.length) {
+            throw new Error("No se encontraron órdenes para este usuario.");
+        }
+
+        return orders;
+    } catch (error) {
+        console.error("Error al obtener las órdenes del usuario:", error.message);
+        throw error; // Propagar el error para manejarlo en el servicio
+    }
+}
+
+
+
 export default {
     getOrders,
     saveOrder,
     getOrdersById,
     updateOrder,
     deleteOrder,
-    getAllOrdersWithPagination
+    getAllOrdersWithPagination,
+    getOrdersByUser
 };

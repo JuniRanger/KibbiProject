@@ -94,11 +94,23 @@ async function getOrderById(orderID) {
     }
 }
 
+async function getUserOrders(userId) {
+    try {
+        // Obtener las órdenes del usuario a través del repositorio
+        const orders = await orderRepository.getOrdersByUser(userId);
+
+        return orders; // Retornar las órdenes al controlador o a quien llame al servicio
+    } catch (error) {
+        console.error("Error en el servicio de obtener órdenes del usuario:", error.message);
+        throw new Error("Error al obtener las órdenes del usuario.");
+    }
+}
+
 export default {
     getAllOrders,
     addOrder,
     getAllOrdersWithPagination,
     deleteOrder,
     updateOrder,
-    getOrderById
+    getUserOrders
 };

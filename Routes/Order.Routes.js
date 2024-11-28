@@ -132,7 +132,6 @@ router.get('/:id', async (req, res, next) => {
         next(error);
     }
 });
-
 /**
  * @swagger
  * /api/orders:
@@ -265,5 +264,18 @@ router.delete('/:id', async (req, res, next) => {
     }
 });
 
+
+
+router.get('/:id', async (req, res, next) => {
+    try {
+        const order = await orderService.getUserOrders(req.user.id);
+        if (!order) {
+            return res.status(404).json({ error: "Orden no encontrada" });
+        }
+        res.json(order);
+    } catch (error) {
+        next(error);
+    }
+});
 
 export default router;
