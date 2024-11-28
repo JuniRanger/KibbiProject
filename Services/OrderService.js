@@ -80,7 +80,18 @@ async function deleteOrder(id) {
 }
 
 async function getOrderById(orderID) {
-    return await OrderRepository.getOrderById(orderID);
+    try {
+        const order = await OrderRepository.getOrdersById(orderID);
+
+        if (!order) {
+            throw new Error(`Orden con ID ${orderID} no encontrada.`);
+        }
+
+        return order;
+    } catch (error) {
+        console.error("Error al obtener la orden:", error.message);
+        throw error;
+    }
 }
 
 export default {

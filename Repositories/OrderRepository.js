@@ -26,15 +26,19 @@ async function getOrders(userId, lastDoc = null) {
     }
 }
 
-async function getOrderById(order) {
+// Obtener órdenes por sus IDs
+async function getOrdersById(orderIds) {
     try {
-        const orderDoc = await Order.findById(order.id);
-        if (!orderDoc) {
-            throw new Error(`Orden con ID ${order.id} no encontrada.`);
+        // Usamos `$in` para buscar múltiples IDs en la colección de órdenes
+        const orders = await Order.find({ _id: { $in: orderIds } });
+
+        if (!orders.length) {
+            throw new Error("No se encontraron órdenes con los IDs proporcionados");
         }
-        return orderDoc;
+
+        return orders;
     } catch (error) {
-        console.error(error);
+        console.error("Error al obtener órdenes por IDs:", error.message);
         throw error;
     }
 }
@@ -94,7 +98,7 @@ async function getAllOrdersWithPagination(skip, limit) {
 export default {
     getOrders,
     saveOrder,
-    getOrderById,
+    getOrdersById,
     updateOrder,
     deleteOrder,
     getAllOrdersWithPagination
