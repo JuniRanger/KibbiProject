@@ -45,7 +45,7 @@ async function getAllProducts() {
 // Obtener producto por ID
 async function getProductById(productId) {
     try {
-        return await productRepository.getProductById(productId);
+        return await productRepository.getProductsById(productId);
     } catch (error) {
         console.error("Error al obtener el producto por ID:", error);
         throw error;

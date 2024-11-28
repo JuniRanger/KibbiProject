@@ -4,6 +4,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Ignorar las carpetas test-repo, server y actor1
+test-repo/
+server/
+actor1/
+
+
 # Logs
 logs
 *.log
