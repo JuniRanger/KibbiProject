@@ -1,4 +1,5 @@
 // orderService.js
+import OrderRepository from "../Repositories/OrderRepository.js";
 import orderRepository from "../Repositories/OrderRepository.js";
 import productRepository from "../Repositories/ProductRepository.js";
 import UserRepository from "../Repositories/UserRepository.js";
@@ -78,11 +79,15 @@ async function deleteOrder(id) {
     }
 }
 
+async function getOrderById(orderID) {
+    return await OrderRepository.getOrderById(orderID);
+}
 
 export default {
     getAllOrders,
     addOrder,
     getAllOrdersWithPagination,
     deleteOrder,
-    updateOrder
+    updateOrder,
+    getOrderById
 };
