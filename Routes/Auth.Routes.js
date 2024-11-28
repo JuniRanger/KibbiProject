@@ -155,8 +155,7 @@ router.post(
         check('username').isString().notEmpty().withMessage('El nombre de usuario es requerido'),
         check('password').isString().isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
         check('correo').isEmail().withMessage('El correo electrónico no es válido'),
-        check('telefono').isString().notEmpty().withMessage('El número de teléfono es requerido'),
-        check('direccion').isString().notEmpty().withMessage('La dirección es requerida'),
+        check('telefono').isString().notEmpty().withMessage('El número de teléfono es requerido')
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -171,7 +170,6 @@ router.post(
                 password,
                 correo,
                 telefono,
-                direccion,
                 restaurantes: restaurantes || [],
             });
             res.status(201).json(userData);
