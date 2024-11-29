@@ -256,14 +256,15 @@ router.delete('/:id', async (req, res) => {
 });
 
 
-router.get('/:id', async(req, res) =>{
+router.get('/restaurant/:restaurantId', async (req, res) => {
     try {
-        const {restaurantId} = req.params;
-        const categories = await getCategoriesByRestaurant(restaurantId);
+        const { restaurantId } = req.params;
+        const categories = await categoryService.getCategoriesByRestaurant(restaurantId);
         res.status(200).json(categories);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-})
+});
+
 
 export default router;
