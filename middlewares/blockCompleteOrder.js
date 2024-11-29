@@ -1,4 +1,4 @@
-import Order from "../Models/OrderModel";
+import Order from "../Models/OrderModel.js";
 
 export async function blockCompletdOrders(req, res, next){
     try {
