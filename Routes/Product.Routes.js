@@ -294,7 +294,7 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.get('/:restauranteId/categories/:categoriaId/products', async(req, res) =>{
+router.get('/:restauranteId/categories/:categoriaId', async(req, res) =>{
     try {
         const {restauranteId, categoriaId} = req.params;
         const products = await productService.getProductsByCatId(categoriaId, restauranteId);
