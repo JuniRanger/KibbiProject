@@ -1,5 +1,6 @@
 import express from 'express';
 import orderService from '../Services/OrderService.js';
+import { blockCompletdOrders } from '../middlewares/blockCompleteOrder.js';
 
 const router = express.Router();
 
@@ -203,7 +204,7 @@ router.post('/', async (req, res, next) => {
  *       401:
  *         description: No autorizado, falta token de autenticación
  */
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', blockCompletdOrders, async (req, res, next) => {
     try {
         const id = req.params.id;
 
