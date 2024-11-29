@@ -123,6 +123,19 @@ async function deleteProduct(productId) {
     }
 }
 
+async function getProductsByCategory(categoriaId, restauranteId){
+    try {
+        const products = await Product.find({
+            categoriaId,
+            restauranteId
+        });
+        return productos;
+    } catch (error) {
+        throw new Error("Error al obtener los productos");
+        
+    }
+}
+
 export default {
     saveProduct,
     getProductsById,

@@ -294,4 +294,15 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+router.get('/:restauranteId/categories/:categoriaId/products', async(req, res) =>{
+    try {
+        const {restauranteId, categoriaId} = req.params;
+        const products = await productService.getProductsByCatId(categoriaId, restauranteId);
+        res.status(200).json({ Prouctos: products });
+    } catch (error) {
+        res.status(404).json({ error: error.message });
+    }
+});
+
+
 export default router;

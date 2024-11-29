@@ -72,6 +72,20 @@ async function deleteProduct(productId) {
     }
 }
 
+async function getProductsByCatId(categoriaId, restauranteId){
+    if (!categoriaId || !restauranteId) {
+        throw new Error('El ID de la categoría y el ID del restaurante son requeridos');
+    }
+
+    const products = await productRepository.getProductsByCategory(categoriaId, restauranteId);
+
+    if (!products || products.length === 0) {
+        throw new Error('No se encontraron productos para esta categoría y restaurante');
+    }
+
+    return products;
+}
+
 export default {
     addProduct,
     getAllProductsWithPagination,
@@ -79,4 +93,5 @@ export default {
     getProductById,
     updateProduct,
     deleteProduct,
+    getProductsByCatId
 };
