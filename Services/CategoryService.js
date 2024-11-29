@@ -106,7 +106,7 @@ async function getAllCategories() {
 
 async function getCategoriesByRestaurant(restaurantId){
     try {
-        const categories = await categoryRepository.FindCategoriesByRestaurantId(restaurantId);
+        const categories = await categoryRepository.findCategoriesByRestaurantId(restaurantId);
         return categories;
     } catch (error) {
         throw new Error('Error al obtener las categorías: ' + error.message);

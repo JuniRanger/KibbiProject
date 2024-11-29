@@ -112,5 +112,5 @@ export default {
     getAllOrdersWithPagination,
     deleteOrder,
     updateOrder,
-    getUserOrders
+    getUserOrders,
 };

@@ -153,4 +153,5 @@ export default {
     getCategoryById,
     updateCategory,
     deleteCategory,
+    findCategoriesByRestaurantId
 };
