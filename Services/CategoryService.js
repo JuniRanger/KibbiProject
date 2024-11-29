@@ -104,6 +104,15 @@ async function getAllCategories() {
     }
 }
 
+async function getCategoriesByRestaurant(restaurantId){
+    try {
+        const categories = await categoryRepository.FindCategoriesByRestaurantId(restaurantId);
+        return categories;
+    } catch (error) {
+        throw new Error('Error al obtener las categorías: ' + error.message);
+    }
+}
+
 export default {
     addCategory,
     getAllCategoriesWithPagination,
@@ -111,5 +120,6 @@ export default {
     getCategoryById,
     updateCategory,
     deleteCategory,
-    getAllCategories
+    getAllCategories,
+    getCategoriesByRestaurant
 };

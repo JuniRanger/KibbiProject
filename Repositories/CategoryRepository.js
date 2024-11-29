@@ -136,6 +136,16 @@ async function deleteCategory(id) {
     }
 }
 
+async function findCategoriesByRestaurantId(restaurantId) {
+    try {
+        const categories = await Category.find({ restaurantId })
+        return categories
+    } catch (error) {
+        throw new Error("Error al acceder a la db" + error.message);
+        
+    }
+}
+
 export default {
     getCategoriesWithPagination,
     countCategories,
