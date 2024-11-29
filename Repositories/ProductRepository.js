@@ -129,7 +129,7 @@ async function getProductsByCategory(categoriaId, restauranteId){
             categoriaId,
             restauranteId
         });
-        return productos;
+        return products;
     } catch (error) {
         throw new Error("Error al obtener los productos");
         
