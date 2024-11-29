@@ -136,13 +136,13 @@ async function deleteCategory(id) {
     }
 }
 
-async function findCategoriesByRestaurantId(restaurantId) {
+async function getCategoriesByRestaurant(restaurantId){
     try {
-        const categories = await Category.find({ restaurantId })
-        return categories
+        // Buscar categorías directamente por el ID del restaurante
+        const categories = await Category.find({ restaurantId });
+        return categories;
     } catch (error) {
-        throw new Error("Error al acceder a la db" + error.message);
-        
+        throw new Error('Error al obtener las categorías del restaurante');
     }
 }
 
@@ -153,5 +153,5 @@ export default {
     getCategoryById,
     updateCategory,
     deleteCategory,
-    findCategoriesByRestaurantId
+    getCategoriesByRestaurant
 };

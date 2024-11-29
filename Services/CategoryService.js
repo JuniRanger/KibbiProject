@@ -104,13 +104,18 @@ async function getAllCategories() {
     }
 }
 
-async function getCategoriesByRestaurant(restaurantId){
-    try {
-        const categories = await categoryRepository.findCategoriesByRestaurantId(restaurantId);
-        return categories;
-    } catch (error) {
-        throw new Error('Error al obtener las categorías: ' + error.message);
+async function getCategoriesByRestaurantId(restaurantId){
+    if (!restaurantId) {
+        throw new Error('El ID del restaurante es requerido');
     }
+
+    const categories = await categoryRepository.getCategoriesByRestaurant(restaurantId);
+
+    if (!categories || categories.length === 0) {
+        throw new Error('No se encontraron categorías para este restaurante');
+    }
+
+    return categories;
 }
 
 export default {
@@ -121,5 +126,5 @@ export default {
     updateCategory,
     deleteCategory,
     getAllCategories,
-    getCategoriesByRestaurant
+    getCategoriesByRestaurantId
 };

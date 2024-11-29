@@ -1,5 +1,6 @@
 import express from 'express';
 import restaurantService from '../Services/RestaurantService.js';
+import categoryService from '../Services/CategoryService.js';
 
 const router = express.Router();
 
@@ -268,5 +269,17 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+
+router.get('/:id/categories', async(req, res, next) =>{
+    try {
+        const restaurantId = req.params.id;
+        const categories = await categoryService.getCategoriesByRestaurantId(restaurantId);
+        res.status(200).json(categories);
+    } catch (error) {
+        res.status(404).json({ error: error.message });
+    }
+});
+
 
 export default router;
