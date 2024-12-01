@@ -89,7 +89,7 @@ router.post('/', async (req, res) => {
             nombre: req.body.nombre,
             restaurantId: req.body.restaurantId
         });
-        res.status(201).json({ categoryData });
+        res.status(201).json(categoryData);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
