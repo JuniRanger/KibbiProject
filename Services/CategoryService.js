@@ -10,7 +10,7 @@ async function addCategory(data) {
         };
 
         const categoryId = await categoryRepository.saveCategory(newCategory);
-        return { id: categoryId, ...newCategory };
+        return { categoryId };
     } catch (error) {
         console.error("Error al agregar categoría:", error);
         throw error;
