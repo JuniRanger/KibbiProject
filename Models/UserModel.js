@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
         telefono: {
             type: String,
             required: true,
-            match: /^\d+$/, // Asegura que solo contenga dígitos
+            match: /^\+?\(?\d{1,3}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/, // Asegura que solo contenga dígitos
         },
         restaurantes: {
             type: [mongoose.Schema.Types.ObjectId], // Referencia a IDs de restaurantes
