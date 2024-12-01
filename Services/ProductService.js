@@ -86,6 +86,17 @@ async function getProductsByCatId(categoriaId, restauranteId){
     return products;
 }
 
+async function getProductsByRestaurant(restaurantId) {
+    try {
+        const products = await productRepository.getProductsByRestaurant(restaurantId);
+        // No ordenar los productos
+        return products; // Devuelve los productos tal como están
+    } catch (error) {
+        console.error("Error al obtener productos por restaurante:", error);
+        throw error;
+    }
+}
+
 export default {
     addProduct,
     getAllProductsWithPagination,
@@ -93,5 +104,6 @@ export default {
     getProductById,
     updateProduct,
     deleteProduct,
-    getProductsByCatId
+    getProductsByCatId,
+    getProductsByRestaurant
 };

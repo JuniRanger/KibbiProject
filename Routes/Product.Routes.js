@@ -304,5 +304,14 @@ router.get('/:restauranteId/categories/:categoriaId', async(req, res) =>{
     }
 });
 
+router.get('/restaurant/:restaurantId', async (req, res) => {
+    try {
+        const { restaurantId } = req.params;
+        const products = await productService.getProductsByRestaurant(restaurantId);
+        res.status(200).json({ products });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 export default router;

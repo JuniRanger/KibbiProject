@@ -122,15 +122,17 @@ router.get('/', async (req, res, next) => {
  *       401:
  *         description: No autorizado, falta token de autenticación
  */
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', async (req, res) => {
     try {
-        const order = await orderService.getOrderById(req.params.id);
+        const orderId = req.params.id;
+        const order = await orderService.getOrderById(orderId);
         if (!order) {
             return res.status(404).json({ error: "Orden no encontrada" });
         }
         res.json(order);
     } catch (error) {
-        next(error);
+        console.error("Error en la ruta al obtener la orden:", error);
+        res.status(500).json({ error: error.message });
     }
 });
 /**
@@ -287,5 +289,29 @@ router.get('/:id', async(req, res) => {
         console.error(error.message)
     }
 })
+
+router.get('/restaurant/:restaurantId', async (req, res) => {
+    try {
+        const { restaurantId } = req.params;
+        console.log("Recibiendo ID de restaurante en la ruta:", restaurantId); // Log del ID
+        const orders = await orderService.getOrdersByRestaurant(restaurantId);
+        console.log("Órdenes devueltas al cliente:", orders); // Log de las órdenes devueltas
+        res.status(200).json({ orders });
+    } catch (error) {
+        console.error("Error en la ruta al obtener órdenes:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.get('/user/completed', async (req, res) => {
+    try {
+        const userId = req.user.id; // Asegúrate de que el ID del usuario esté disponible
+        const completedOrders = await orderService.getCompletedOrdersByUser(userId);
+        res.status(200).json({ completedOrders });
+    } catch (error) {
+        console.error("Error en la ruta al obtener órdenes completadas:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
 
 export default router;

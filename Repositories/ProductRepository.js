@@ -136,6 +136,15 @@ async function getProductsByCategory(categoriaId, restauranteId){
     }
 }
 
+async function getProductsByRestaurant(restaurantId) {
+    try {
+        const products = await Product.find({ restauranteId: restaurantId }).lean();
+        return products;
+    } catch (error) {
+        throw new Error('Error al obtener productos del restaurante');
+    }
+}
+
 export default {
     saveProduct,
     getProductsById,
@@ -143,5 +152,6 @@ export default {
     getAllProductsWithPagination,
     updateProduct,
     deleteProduct,
-    getProductsByCategory
+    getProductsByCategory,
+    getProductsByRestaurant
 };

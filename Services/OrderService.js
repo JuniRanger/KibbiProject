@@ -79,17 +79,15 @@ async function deleteOrder(id) {
     }
 }
 
-async function getOrderById(orderID) {
+async function getOrderById(orderId) {
     try {
-        const order = await OrderRepository.getOrdersById(orderID);
-
+        const order = await orderRepository.getOrderById(orderId);
         if (!order) {
-            throw new Error(`Orden con ID ${orderID} no encontrada.`);
+            throw new Error("Orden no encontrada");
         }
-
         return order;
     } catch (error) {
-        console.error("Error al obtener la orden:", error.message);
+        console.error("Error al obtener la orden por ID:", error);
         throw error;
     }
 }
@@ -106,6 +104,28 @@ async function getUserOrders(userId) {
     }
 }
 
+async function getOrdersByRestaurant(restaurantId) {
+    console.log("Recibiendo ID de restaurante en el servicio:", restaurantId); // Log del ID
+    try {
+        const orders = await orderRepository.getOrdersByRestaurant(restaurantId);
+        console.log("Órdenes devueltas del repositorio:", orders); // Log de las órdenes devueltas
+        return orders; // Devuelve las órdenes tal como están
+    } catch (error) {
+        console.error("Error al obtener órdenes por restaurante:", error);
+        throw error;
+    }
+}
+
+async function getCompletedOrdersByUser(userId) {
+    try {
+        const orders = await orderRepository.getCompletedOrdersByUser(userId);
+        return orders; // Devuelve las órdenes completadas
+    } catch (error) {
+        console.error("Error al obtener órdenes completadas del usuario:", error);
+        throw error;
+    }
+}
+
 export default {
     getAllOrders,
     addOrder,
@@ -113,4 +133,7 @@ export default {
     deleteOrder,
     updateOrder,
     getUserOrders,
+    getOrdersByRestaurant,
+    getOrderById,
+    getCompletedOrdersByUser,
 };

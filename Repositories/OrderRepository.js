@@ -111,7 +111,37 @@ async function getOrdersByUser(userId) {
     }
 }
 
+async function getOrdersByRestaurant(restaurantId) {
+    try {
+        console.log("Buscando órdenes para el restaurante ID:", restaurantId);
+        const orders = await Order.find({ restauranteId: restaurantId }).lean();
+        console.log("Órdenes encontradas:", orders);
+        return orders;
+    } catch (error) {
+        console.error("Error al obtener órdenes del restaurante:", error);
+        throw new Error('Error al obtener órdenes del restaurante');
+    }
+}
 
+async function getOrderById(orderId) {
+    try {
+        const order = await Order.findById(orderId).lean();
+        return order;
+    } catch (error) {
+        console.error("Error al obtener la orden por ID:", error);
+        throw new Error("Error al obtener la orden");
+    }
+}
+
+async function getCompletedOrdersByUser(userId) {
+    try {
+        const orders = await Order.find({ cliente: userId, estado: 'completado' }).lean();
+        return orders;
+    } catch (error) {
+        console.error("Error al obtener órdenes completadas del usuario:", error);
+        throw new Error('Error al obtener órdenes completadas del usuario');
+    }
+}
 
 export default {
     getOrders,
@@ -120,5 +150,8 @@ export default {
     updateOrder,
     deleteOrder,
     getAllOrdersWithPagination,
-    getOrdersByUser
+    getOrdersByUser,
+    getOrdersByRestaurant,
+    getOrderById,
+    getCompletedOrdersByUser
 };
