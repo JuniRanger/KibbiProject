@@ -24,7 +24,7 @@ export async function verifyToken(req, res, next) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
-        req.user = { ...decoded };
+        req.user = { id: user._id, ...decoded };
 
         next(); 
     } catch (err) {

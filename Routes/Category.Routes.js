@@ -265,6 +265,15 @@ router.get('/:id/products', async(req, res) => {
     }
 })
 
+router.get('/restaurant/:id', async(req, res) => {
+    try {
+        const restaurantId = req.params.id;
+        const restaurantCategories = await categoryService.getCategoriesByRestaurantId(restaurantId);
+        res.status(200).json(restaurantCategories);
+    } catch (error) {
+        res.status(500).json({ error: error.message})
+    }
+})
 
 
 

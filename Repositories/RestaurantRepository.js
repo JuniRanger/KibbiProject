@@ -1,5 +1,6 @@
 import Restaurant from "../Models/RestaurantModel.js";
 import User from "../Models/UserModel.js";
+import mongoose from 'mongoose'
 
 async function saveRestaurant(restaurantData) {
     try {
@@ -105,13 +106,13 @@ async function deleteRestaurant(restaurantId) {
     }
 }
 
-async function getRestaurantsByUser(userId){
+async function getRestaurantsByUser(userId) {
     try {
-        const restaurantData = await Restaurant.find({ owner: userId });
-        return restaurantData
+        // Aseguramos que userId sea un ObjectId válido
+        const restaurantData = await Restaurant.find(userId);
+        return restaurantData;
     } catch (error) {
-        throw new Error("Error al obtener los restaurantes");
-        
+        throw new Error("Error al obtener los restaurantes: " + error.message);
     }
 }
 
