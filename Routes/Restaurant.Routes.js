@@ -1,6 +1,7 @@
 import express from 'express';
 import restaurantService from '../Services/RestaurantService.js';
 import categoryService from '../Services/CategoryService.js';
+import injectUserIdIntoParams from '../middlewares/userMiddleware.js';
 
 const router = express.Router();
 
@@ -127,25 +128,25 @@ router.post('/', async (req, res) => {
  *       500:
  *         description: Error en el servidor
  */
-// router.get('/', async (req, res) => {
-//     try {
-//         const { page = 1, limit = 10 } = req.query;
+router.get('/', async (req, res) => {
+    try {
+        const { page = 1, limit = 10 } = req.query;
 
-//         const pageNum = parseInt(page);
-//         const limitNum = parseInt(limit);
+        const pageNum = parseInt(page);
+        const limitNum = parseInt(limit);
 
-//         const { total, restaurants, currentPage, totalPages } = await restaurantService.getAllRestaurantsWithPagination(pageNum, limitNum);
+        const { total, restaurants, currentPage, totalPages } = await restaurantService.getAllRestaurantsWithPagination(pageNum, limitNum);
 
-//         res.status(200).json({
-//             total,
-//             restaurants,
-//             currentPage,
-//             totalPages
-//         });
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// });
+        res.status(200).json({
+            total,
+            restaurants,
+            currentPage,
+            totalPages
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 /**
  * @swagger
@@ -282,12 +283,12 @@ router.get('/:id/categories', async(req, res, next) =>{
 });
 
 // Ruta para obtener restaurantes por usuario
-router.get('/', async (req, res) => {
+router.get('/users/:userId', async (req, res) => {
     try {
-        const userId = req.user.id;  // Asegúrate de que req.user.id contenga el ID correcto
+        const userId = req.params.userId;  
 
         // Verifica el userId
-        console.log('User ID:', userId);  // Imprime el ID para asegurarte de que es el correcto
+        console.log('User ID:', userId); 
 
         // Obtiene los restaurantes asociados al usuario
         const restaurants = await restaurantService.getRestaurantsByUserId(userId);

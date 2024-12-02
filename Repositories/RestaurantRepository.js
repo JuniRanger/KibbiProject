@@ -106,16 +106,19 @@ async function deleteRestaurant(restaurantId) {
     }
 }
 
+// Repositorio para obtener los restaurantes por userId
 async function getRestaurantsByUser(userId) {
     try {
-        const user = await User.findById(userId).populate('restaurantes');
+        // Buscar todos los restaurantes cuyo userId coincida con el ID del usuario
+        const restaurants = await Restaurant.find({ userId: userId });
 
-        if(!user){
-            throw new Error("Usuario no encontrado");
+        if (!restaurants || restaurants.length === 0) {
+            throw new Error("No se encontraron restaurantes para este usuario");
         }
-        
-        return user.restaurantes;
+
+        return restaurants;  // Devuelve los restaurantes encontrados
     } catch (error) {
+        console.error("Error en el repositorio: ", error.message);
         throw new Error("Error al obtener los restaurantes: " + error.message);
     }
 }
