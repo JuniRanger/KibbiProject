@@ -82,7 +82,7 @@ router.post('/', async (req, res) => {
         });
 
         console.log("Cuerpo del request:", req.body)
-        res.status(201).json({ productData });
+        res.status(201).json(productData);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -294,15 +294,15 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.get('/:restauranteId/categories/:categoriaId', async(req, res) =>{
-    try {
-        const {restauranteId, categoriaId} = req.params;
-        const products = await productService.getProductsByCatId(categoriaId, restauranteId);
-        res.status(200).json({ Prouctos: products });
-    } catch (error) {
-        res.status(404).json({ error: error.message });
-    }
-});
+// router.get('/:restauranteId/categories/:categoriaId', async(req, res) =>{
+//     try {
+//         const {restauranteId, categoriaId} = req.params;
+//         const products = await productService.getProductsByCatId(categoriaId, restauranteId);
+//         res.status(200).json({ Prouctos: products });
+//     } catch (error) {
+//         res.status(404).json({ error: error.message });
+//     }
+// });
 
 router.get('/restaurant/:restaurantId', async (req, res) => {
     try {

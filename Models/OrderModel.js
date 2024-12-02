@@ -16,7 +16,7 @@ const OrderSchema = new mongoose.Schema(
         },
         estado: {
             type: String,
-            enum: ['pendiente', 'aceptado', 'preparando', 'completado', 'cancelado'], // Ajusta según tu lógica
+            enum: ['pendiente', 'aceptado', 'preparando', 'terminado', 'completado', 'cancelado'], // Ajusta según tu lógica
             default: 'pendiente' // Asegura que esté en minúsculas para consistencia
         },
         notas: {

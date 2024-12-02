@@ -4,31 +4,43 @@ import Category from '../Models/CategoryModel.js';
 // Guardar un producto
 async function saveProduct(product) {
     try {
-        console.log('Categoria id', product.categoriaId)
-        const categoryId = product.categoriaId;
-        const categoryDoc = await Category.findById(categoryId);
+        console.log('Categoria id:', product.categoriaId);
+
+        // Obtén el documento de la categoría
+        const categoryDoc = await Category.findById(product.categoriaId);
 
         if (!categoryDoc) {
             throw new Error("Categoría no encontrada");
         }
 
+        // Extrae el nombre de la categoría
         const nombreCategoria = categoryDoc.nombre;
-        delete product.categoriaId;
+
+        // Prepara los datos del producto, elimina categoriaId
+        const {...productData } = product; // Extraemos categoriaId
 
         const productWithCategoryName = {
-            ...product,
-            nombreCategoria,
+            ...productData,
+            nombreCategoria, // Agrega el nombre de la categoría
         };
 
+        // Crea y guarda el nuevo producto
         const newProduct = new Product(productWithCategoryName);
         const savedProduct = await newProduct.save();
 
-        return savedProduct;
+        // Retorna los datos guardados, incluyendo el id
+        return {
+            id: savedProduct._id,
+            ...savedProduct.toObject(), 
+        };
     } catch (error) {
         console.error("Error al guardar el producto:", error.message);
         throw error;
     }
 }
+
+
+
 
 // Obtener productos por sus IDs
 async function getProductsById(productIds) {

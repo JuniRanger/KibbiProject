@@ -255,6 +255,15 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+router.get('/:id/products', async(req, res) => {
+    try {
+        const categoryId = req.params.id;
+        const categoryProducts = await categoryService.getProductsByCategoryId(categoryId);
+        res.status(201).json(categoryProducts);
+    } catch (error) {
+        res.status(500).json({ error: error.message});
+    }
+})
 
 
 

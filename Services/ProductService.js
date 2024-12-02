@@ -11,10 +11,9 @@ async function addProduct(productData) {
             imagenes: productData.imagenes,
             restauranteId: productData.restauranteId,
         };
-
         console.log("Productos que se estan enviando:", product)
-        const productId = await productRepository.saveProduct(product);
-        return { id: productId, ...product };
+        const newProduct = await productRepository.saveProduct(product);
+        return { newProduct };
     } catch (error) {
         console.error("Error al agregar el producto:", error);
         throw error;

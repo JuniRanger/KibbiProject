@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
+import Category from './CategoryModel.js';
 
-// Definición del esquema de producto
 const productSchema = new mongoose.Schema(
     {
         nombre: {
@@ -17,6 +17,11 @@ const productSchema = new mongoose.Schema(
         categoriaId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Categories',
+            required: true
+        },
+        nombreCategoria: { // Agregar el campo de nombreCategoria
+            type: String,
+            required: true, // Esto hace que el nombre se guarde en la base de datos
         },
         descripcion: {
             type: String,
@@ -45,6 +50,17 @@ const productSchema = new mongoose.Schema(
         timestamps: true, // createdAt y updatedAt automáticos
     }
 );
+
+// Middleware para actualizar nombreCategoria cuando se actualice el producto
+productSchema.pre('save', async function(next) {
+    if (this.isModified('categoriaId')) {
+        const category = await Category.findById(this.categoriaId);
+        if (category) {
+            this.nombreCategoria = category.nombre;
+        }
+    }
+    next();
+});
 
 // Modelo
 const Product = mongoose.models.Product || mongoose.model('Product', productSchema);

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Category from "../Models/CategoryModel.js";
 import Restaurant from "../Models/RestaurantModel.js";
+import Product from "../Models/ProductModel.js";
 
 // Obtener categorías con paginación
 async function getCategoriesWithPagination(skip, limit) {
@@ -146,6 +147,21 @@ async function getCategoriesByRestaurant(restaurantId){
     }
 }
 
+async function getProductsByCategory(categoriaId){
+    try {
+        const products = await Product.find({ categoriaId })
+
+        if(!products) {
+            throw new Error("Productos no encontrados para esta categoria");
+        }
+
+        return products;
+    } catch (error) {
+        throw new Error("Error al obtener los productos de esta categoria");
+        
+    }
+}
+
 export default {
     getCategoriesWithPagination,
     countCategories,
@@ -153,5 +169,6 @@ export default {
     getCategoryById,
     updateCategory,
     deleteCategory,
-    getCategoriesByRestaurant
+    getCategoriesByRestaurant,
+    getProductsByCategory
 };

@@ -270,7 +270,7 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-
+//obtener todas las categorias de un restaurante
 router.get('/:id/categories', async(req, res, next) =>{
     try {
         const restaurantId = req.params.id;
@@ -281,5 +281,15 @@ router.get('/:id/categories', async(req, res, next) =>{
     }
 });
 
+//obtener restaurante por usuario
+router.get('/user', async(req, res) => {
+    try {
+        const userId = req.user.id;
+        const restaurants = await restaurantService.getRestaurantsByUserId(userId);
+        res.status(200).json({ restaurants })
+    } catch (error) {
+        res.status(404).json({ error: error.message })
+    }
+})
 
 export default router;

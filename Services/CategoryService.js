@@ -118,6 +118,21 @@ async function getCategoriesByRestaurantId(restaurantId){
     return categories;
 }
 
+async function getProductsByCategoryId(categoryId){
+    try {
+        if(!categoryId){
+            throw new Error("El id de la categoria es requerido");
+        }
+
+        const products = await categoryRepository.getProductsByCategory(categoryId);
+
+        return { products }
+    } catch (error) {
+        throw new Error("No se encontraron productos para esta categoria");
+        
+    }
+}
+
 export default {
     addCategory,
     getAllCategoriesWithPagination,
@@ -126,5 +141,6 @@ export default {
     updateCategory,
     deleteCategory,
     getAllCategories,
-    getCategoriesByRestaurantId
+    getCategoriesByRestaurantId,
+    getProductsByCategoryId
 };

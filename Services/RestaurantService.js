@@ -73,11 +73,28 @@ async function deleteRestaurant(id) {
     }
 }
 
+async function getRestaurantsByUserId(userId){
+    try {
+        const restaurants = await restaurantRepository.getRestaurantsByUser(userId);
+
+        if(!restaurants || restaurants.length === 0) {
+            throw new Error("No se encontraron resturantes para este usuario");
+        }
+
+        return restaurants;
+    } catch (error) {
+        console.error(error.message)
+        
+    }
+}
+
+
 export default {
     addRestaurant,
     getAllRestaurants,
     getAllRestaurantsWithPagination,
     getRestaurantById,
     updateRestaurant,
-    deleteRestaurant
+    deleteRestaurant,
+    getRestaurantsByUserId
 };

@@ -105,6 +105,16 @@ async function deleteRestaurant(restaurantId) {
     }
 }
 
+async function getRestaurantsByUser(userId){
+    try {
+        const restaurantData = await Restaurant.find({ owner: userId });
+        return restaurantData
+    } catch (error) {
+        throw new Error("Error al obtener los restaurantes");
+        
+    }
+}
+
 export default {
     saveRestaurant,
     getRestaurants,
@@ -112,4 +122,5 @@ export default {
     getRestaurantById,
     updateRestaurant,
     deleteRestaurant,
+    getRestaurantsByUser
 };
