@@ -75,6 +75,7 @@ async function deleteRestaurant(id) {
 
 async function getRestaurantsByUserId(userId){
     try {
+
         const restaurants = await restaurantRepository.getRestaurantsByUser(userId);
 
         if(!restaurants || restaurants.length === 0) {

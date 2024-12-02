@@ -24,8 +24,9 @@ export async function verifyToken(req, res, next) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
-        req.user = { id: user._id, ...decoded };
+        const decodedUser = req.user = { id: user._id, ...decoded };
 
+        console.log(decodedUser);
         next(); 
     } catch (err) {
         console.error('Token Verification Error:', err.message);

@@ -108,8 +108,7 @@ async function deleteRestaurant(restaurantId) {
 
 async function getRestaurantsByUser(userId) {
     try {
-        // Aseguramos que userId sea un ObjectId válido
-        const restaurantData = await Restaurant.find(userId);
+        const restaurantData = await Restaurant.find({ userId: userId }).lean();
         return restaurantData;
     } catch (error) {
         throw new Error("Error al obtener los restaurantes: " + error.message);

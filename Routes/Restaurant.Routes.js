@@ -284,8 +284,9 @@ router.get('/:id/categories', async(req, res, next) =>{
 //obtener restaurante por usuario
 router.get('/user', async(req, res) => {
     try {
-        const userId = req.user.id;
-        const restaurants = await restaurantService.getRestaurantsByUserId(userId);
+        const restaurants = await restaurantService.getRestaurantsByUserId({
+            userId: req.user.id
+        });
         res.status(200).json({ restaurants })
     } catch (error) {
         res.status(404).json({ error: error.message })
