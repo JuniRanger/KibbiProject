@@ -1,6 +1,6 @@
 import Restaurant from "../Models/RestaurantModel.js";
 import User from "../Models/UserModel.js";
-import mongoose from 'mongoose'
+
 
 async function saveRestaurant(restaurantData) {
     try {
@@ -108,8 +108,13 @@ async function deleteRestaurant(restaurantId) {
 
 async function getRestaurantsByUser(userId) {
     try {
-        const restaurantData = await Restaurant.find({ userId: userId }).lean();
-        return restaurantData;
+        const user = await User.findById(userId).populate('restaurantes');
+
+        if(!user){
+            throw new Error("Usuario no encontrado");
+        }
+        
+        return user.restaurantes;
     } catch (error) {
         throw new Error("Error al obtener los restaurantes: " + error.message);
     }

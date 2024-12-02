@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
         },
         restaurantes: {
             type: [mongoose.Schema.Types.ObjectId], // Referencia a IDs de restaurantes
-            ref: 'Restaurant',
+            ref: 'Restaurants',
             default: [], // Valor por defecto: arreglo vacío
         },
     },

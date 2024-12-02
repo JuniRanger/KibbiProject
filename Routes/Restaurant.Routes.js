@@ -127,25 +127,25 @@ router.post('/', async (req, res) => {
  *       500:
  *         description: Error en el servidor
  */
-router.get('/', async (req, res) => {
-    try {
-        const { page = 1, limit = 10 } = req.query;
+// router.get('/', async (req, res) => {
+//     try {
+//         const { page = 1, limit = 10 } = req.query;
 
-        const pageNum = parseInt(page);
-        const limitNum = parseInt(limit);
+//         const pageNum = parseInt(page);
+//         const limitNum = parseInt(limit);
 
-        const { total, restaurants, currentPage, totalPages } = await restaurantService.getAllRestaurantsWithPagination(pageNum, limitNum);
+//         const { total, restaurants, currentPage, totalPages } = await restaurantService.getAllRestaurantsWithPagination(pageNum, limitNum);
 
-        res.status(200).json({
-            total,
-            restaurants,
-            currentPage,
-            totalPages
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+//         res.status(200).json({
+//             total,
+//             restaurants,
+//             currentPage,
+//             totalPages
+//         });
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// });
 
 /**
  * @swagger
@@ -281,16 +281,27 @@ router.get('/:id/categories', async(req, res, next) =>{
     }
 });
 
-//obtener restaurante por usuario
-router.get('/user', async(req, res) => {
+// Ruta para obtener restaurantes por usuario
+router.get('/', async (req, res) => {
     try {
-        const restaurants = await restaurantService.getRestaurantsByUserId({
-            userId: req.user.id
-        });
-        res.status(200).json({ restaurants })
+        const userId = req.user.id;  // Asegúrate de que req.user.id contenga el ID correcto
+
+        // Verifica el userId
+        console.log('User ID:', userId);  // Imprime el ID para asegurarte de que es el correcto
+
+        // Obtiene los restaurantes asociados al usuario
+        const restaurants = await restaurantService.getRestaurantsByUserId(userId);
+
+        if (!restaurants || restaurants.length === 0) {
+            return res.status(404).json({ error: 'No se encontraron restaurantes para este usuario' });
+        }
+
+        res.status(200).json({ restaurants });
     } catch (error) {
-        res.status(404).json({ error: error.message })
+        console.error('Error:', error.message);  // Agrega un log para ver el error en caso de que ocurra
+        res.status(404).json({ error: error.message });
     }
-})
+});
+
 
 export default router;
