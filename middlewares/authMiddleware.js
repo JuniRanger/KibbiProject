@@ -13,14 +13,14 @@ export async function verifyToken(req, res, next) {
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
 
-        if (!decoded || !decoded.username) {
-            throw new Error("Username missing in token");
+        if (!decoded || !decoded.email) {
+            throw new Error("Email missing in token");
         }
 
-        const user = await userRepository.getUserByUsername(decoded.username);
+        const user = await userRepository.getUserByEmail(decoded.email);
 
         if (!user) {
-            console.log(`Usuario no encontrado para el username: ${decoded.username}`);
+            console.log(`Usuario no encontrado para el email: ${decoded.email}`);
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 

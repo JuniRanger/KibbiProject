@@ -88,7 +88,14 @@ async function getRestaurantsByUserId(userId){
     }
 }
 
-
+async function getRestaurantByName(name) {
+    try {
+        return await restaurantRepository.getRestaurantByName(name);
+    } catch (error) {
+        console.error("Error en el servicio al buscar restaurante:", error);
+        throw error;
+    }
+}
 
 export default {
     addRestaurant,
@@ -97,5 +104,6 @@ export default {
     getRestaurantById,
     updateRestaurant,
     deleteRestaurant,
-    getRestaurantsByUserId
+    getRestaurantsByUserId,
+    getRestaurantByName
 };

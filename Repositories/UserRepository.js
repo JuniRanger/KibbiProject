@@ -87,6 +87,14 @@ async function getAllUsersWithPagination(skip, limit) {
     }
 }
 
+async function getUserByEmail(email) {
+    try {
+        return await User.findOne({ correo: email }).lean();
+    } catch (error) {
+        console.error("Error al obtener usuario por email:", error);
+        throw error;
+    }
+}
 
 export default {
     saveUser,
@@ -95,5 +103,6 @@ export default {
     getAllUsersWithPagination,
     countUsers,
     getUserById,
-    getUsernameById
+    getUsernameById,
+    getUserByEmail
 };

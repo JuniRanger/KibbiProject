@@ -152,9 +152,8 @@ router.get('/users', async (req, res) => {
 router.post(
     '/register',
     [
-        check('username').isString().notEmpty().withMessage('El nombre de usuario es requerido'),
-        check('password').isString().isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
         check('correo').isEmail().withMessage('El correo electrónico no es válido'),
+        check('password').isString().isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
         check('telefono').isString().notEmpty().withMessage('El número de teléfono es requerido')
     ],
     async (req, res) => {
@@ -164,12 +163,12 @@ router.post(
         }
 
         try {
-            const { username, password, correo, telefono, direccion, restaurantes } = req.body;
+            const { correo, password, telefono, direccion, restaurantes } = req.body;
             const userData = await authService.register({
-                username,
-                password,
                 correo,
+                password,
                 telefono,
+                direccion,
                 restaurantes: restaurantes || [],
             });
             res.status(201).json(userData);
@@ -193,12 +192,11 @@ router.post(
  *           schema:
  *             type: object
  *             properties:
- *               username:
+ *               email:
  *                 type: string
- *                 description: Nombre de usuario
+ *                 format: email
  *               password:
  *                 type: string
- *                 description: Contraseña del usuario
  *     responses:
  *       200:
  *         description: Inicio de sesión exitoso, devuelve el token JWT
@@ -217,8 +215,8 @@ router.post(
  */
 router.post('/login', async (req, res) => {
     try {
-        const { username, password } = req.body;
-        const token = await authService.login(username, password);
+        const { email, password } = req.body;
+        const token = await authService.login(email, password);
         res.json({ token });
     } catch (error) {
         res.status(400).json({ error: error.message });

@@ -123,6 +123,15 @@ async function getRestaurantsByUser(userId) {
     }
 }
 
+async function getRestaurantByName(name) {
+    try {
+        return await Restaurant.findOne({ nombre: new RegExp(name, 'i') }).lean();
+    } catch (error) {
+        console.error("Error al buscar restaurante por nombre:", error);
+        throw error;
+    }
+}
+
 export default {
     saveRestaurant,
     getRestaurants,
@@ -130,5 +139,6 @@ export default {
     getRestaurantById,
     updateRestaurant,
     deleteRestaurant,
-    getRestaurantsByUser
+    getRestaurantsByUser,
+    getRestaurantByName
 };

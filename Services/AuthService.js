@@ -32,14 +32,14 @@ async function register(user) {
     }
 }
 
-async function login(username, password) {
-    const user = await userRepository.getUserByUsername(username);
+async function login(email, password) {
+    const user = await userRepository.getUserByEmail(email);
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
-        throw new Error('Credenciales invalidas');
+        throw new Error('Credenciales inválidas');
     }
 
-    const token = jwt.sign({ id: user.id, username: user.username }, process.env.SECRET_KEY, { expiresIn: process.env.EXPIRES_IN });
+    const token = jwt.sign({ id: user.id, email: user.correo }, process.env.SECRET_KEY, { expiresIn: process.env.EXPIRES_IN });
     return token;
 }
 

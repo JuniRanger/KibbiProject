@@ -304,5 +304,41 @@ router.get('/users/:userId', async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /api/restaurants/search/{name}:
+ *   get:
+ *     summary: Obtener restaurante por nombre
+ *     tags: [Restaurants]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Restaurante encontrado
+ *       404:
+ *         description: Restaurante no encontrado
+ *       500:
+ *         description: Error en el servidor
+ */
+router.get('/search/:name', async (req, res) => {
+    try {
+        const restaurantName = req.params.name;
+        const restaurant = await restaurantService.getRestaurantByName(restaurantName);
+        
+        if (!restaurant) {
+            return res.status(404).json({ error: 'Restaurante no encontrado' });
+        }
+        
+        res.status(200).json({ restaurant });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 export default router;
